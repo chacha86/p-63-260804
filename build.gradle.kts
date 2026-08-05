@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-h2console")
+    runtimeOnly("com.h2database:h2")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
