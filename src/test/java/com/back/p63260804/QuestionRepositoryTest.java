@@ -81,4 +81,17 @@ class QuestionRepositoryTest {
         assertEquals("수정된 제목", q2.getSubject());
 
     }
+
+    @Test
+    @DisplayName("데이터 삭제")
+    void t7() {
+
+        assertEquals(2, this.questionRepository.count());
+        Optional<Question> oq = this.questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        this.questionRepository.delete(q);
+        assertEquals(1, this.questionRepository.count());
+    }
+
 }
