@@ -27,4 +27,14 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Answer> answers = new ArrayList<>();
+    public Answer addAnswer(String content) {
+        Answer answer = new Answer();
+        answer.setContent(content);
+        answer.setQuestion(this);
+        answer.setCreateDate(LocalDateTime.now());
+
+        this.answers.add(answer);
+
+        return answer;
+    }
 }

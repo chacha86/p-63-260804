@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class QuestionRepositoryTest {
 
     @Autowired
@@ -121,11 +122,25 @@ class QuestionRepositoryTest {
         Answer answer = new Answer();
         answer.setContent("답변 내용");
         answer.setQuestion(question2);
+        answer.setCreateDate(LocalDateTime.now());
 
         question2.getAnswers().add(answer);
         questionRepository.flush(); // flush()를 호출하여 변경 내용을 데이터베이스에 즉시 반영
 
         Answer foundedAnswer = answerRepository.findById(answer.getId()).get(); // 데이터베이스에 저장되면서 answer Id 확보 가능.
         assertEquals("답변 내용", foundedAnswer.getContent());
+    }
+
+    @Test
+    @DisplayName("답변 데이터 생성3 - Question의 addAnswer() 메서드 사용. 가장 객체지향적")
+    @Transactional
+    void t10() {
+        Question question2 = questionRepository.findById(2).get();
+
+        Answer answer = question2.addAnswer("답변 내용");
+        questionRepository.flush();
+
+        Answer answer2 = answerRepository.findById(answer.getId()).get();
+        assertEquals("답변 내용", answer2.getContent());
     }
 }
