@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -100,6 +101,7 @@ class QuestionRepositoryTest {
 
     @Test
     @DisplayName("답변 데이터 생성")
+    @Transactional
     void t8() {
         Question question = this.questionRepository.findById(2).get();
 
@@ -110,4 +112,20 @@ class QuestionRepositoryTest {
         this.answerRepository.save(a);
     }
 
+    @Test
+    @DisplayName("답변 데이터 생성2 - OneToMany 방식")
+    @Transactional
+    void t9() {
+        Question question2 = questionRepository.findById(2).get();
+
+        Answer answer = new Answer();
+        answer.setContent("답변 내용");
+        answer.setQuestion(question2);
+
+        question2.getAnswers().add(answer);
+        questionRepository.flush(); // flush()를 호출하여 변경 내용을 데이터베이스에 즉시 반영
+
+        Answer foundedAnswer = answerRepository.findById(answer.getId()).get(); // 데이터베이스에 저장되면서 answer Id 확보 가능.
+        assertEquals("답변 내용", foundedAnswer.getContent());
+    }
 }
