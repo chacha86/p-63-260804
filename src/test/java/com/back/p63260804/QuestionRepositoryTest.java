@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,6 +135,7 @@ class QuestionRepositoryTest {
     @Test
     @DisplayName("답변 데이터 생성3 - Question의 addAnswer() 메서드 사용. 가장 객체지향적")
     @Transactional
+    @Rollback(false)
     void t10() {
         Question question2 = questionRepository.findById(2).get();
 
@@ -142,5 +144,12 @@ class QuestionRepositoryTest {
 
         Answer answer2 = answerRepository.findById(answer.getId()).get();
         assertEquals("답변 내용", answer2.getContent());
+    }
+
+    @Test
+    @DisplayName("EAGER 로딩")
+    void t11() {
+        Question question = questionRepository.findById(2).get();
+        System.out.println(question.getAnswers().get(0).getContent());
     }
 }

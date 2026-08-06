@@ -25,7 +25,12 @@ public class Question {
 
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "question", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(
+            mappedBy = "question",
+            cascade = {CascadeType.REMOVE,
+                    CascadeType.PERSIST},
+            fetch = FetchType.EAGER
+    )
     private List<Answer> answers = new ArrayList<>();
     public Answer addAnswer(String content) {
         Answer answer = new Answer();
