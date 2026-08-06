@@ -29,7 +29,7 @@ public class Question {
             mappedBy = "question",
             cascade = {CascadeType.REMOVE,
                     CascadeType.PERSIST},
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Answer> answers = new ArrayList<>();
     public Answer addAnswer(String content) {

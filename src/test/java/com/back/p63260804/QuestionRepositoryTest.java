@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
 class QuestionRepositoryTest {
 
     @Autowired
@@ -150,6 +149,14 @@ class QuestionRepositoryTest {
     @DisplayName("EAGER 로딩")
     void t11() {
         Question question = questionRepository.findById(2).get();
+        System.out.println(question.getAnswers().get(0).getContent());
+    }
+
+    @Test
+    @DisplayName("LAZY 로딩")
+    @Transactional
+    void t12() {
+        Question question = questionRepository.findById(2).get(); // 트랜잭션이 여기서 시작해서 여기서 닫힘
         System.out.println(question.getAnswers().get(0).getContent());
     }
 }
